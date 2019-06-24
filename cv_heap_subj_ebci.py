@@ -5,20 +5,21 @@ import shutil
 
 import os
 import sys
-sys.path.append(os.path.join(os.path.split(os.getcwd())[0],'data_loader'))
+sys.path.append(os.path.join(os.path.split(os.getcwd())[0],'ebci_data_loader'))
 
 from data import DataBuildClassifier
 # from data_proj_pursuit import DataProjPursuit
 from keras.utils import to_categorical
 from keras.callbacks import ModelCheckpoint
 from keras.models import load_model
+import keras.backend as K
 from src.NN import get_model
 from src.utils import single_auc_loging, clean_bad_auc_models,set_seed
 from src.my_callbacks import PerSubjAucMetricHistory,AucMetricHistory
 from src.models import EEGNet
 import numpy as np
 import pickle
-
+K.set_image_data_format("channels_first")
 
 def heap_subj_test(subjects,model,model_path,train_subjects,val_subjects):
     # train_subj = [subj_idx for subj_idx in subjects.keys() if subj_idx not in test_subjects]
@@ -63,7 +64,7 @@ if __name__=='__main__':
 
 
 
-    data = DataBuildClassifier('/home/likan_blk/BCI/NewData')
+    data = DataBuildClassifier('/home/amplifier/common/ebci_data/NewData')
     all_subjects = [25, 27, 28, 29, 30, 33] #BE CAREFUL, the 32th is excluded
 
     subjects = data.get_data(all_subjects, shuffle=False, windows=[(0.2, 0.5)], baseline_window=(0.2, 0.3),
@@ -72,8 +73,8 @@ if __name__=='__main__':
     val_subjects = [28, 29]
     train_subjects = [25, 27, 30, 33]
 
-    path_to_save = os.path.join(experiment_res_dir, str(val_subjects))
-    model_path = os.path.join(path_to_save, 'checkpoints')
+    path_to_save = os.path.join(experiment_res_dir, '_'.join(map(str,val_subjects)))
+    model_path = os.path.join(path_to_save, 'check_points')
     if os.path.isdir(path_to_save):
         shutil.rmtree(path_to_save)
     os.makedirs(model_path)
@@ -83,4 +84,4 @@ if __name__=='__main__':
     model = EEGNet(params_v4, nb_classes=2, F2=params_v4['F1'] * params_v4['D'], Chans=Chans, Samples=Samples)
 
     history = heap_subj_test(subjects, model, model_path, train_subjects, val_subjects)
-    single_auc_loging(history, 'Val=%s' %str(val_subjects), path_to_save)
+    single_auc_loging(history.history, 'Val=%s' %str(val_subjects), path_to_save)
