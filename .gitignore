@@ -1,7 +1,9 @@
 #First, ignore everything
 *
+src/*
 #Whitelist .py files
 !*.py
 !*.md
 !.gitignore
+!src/
 !src/*.py

@@ -20,6 +20,14 @@ import tensorflow as tf
 #     with open('./res/%s.pkl'%title,'wb') as output:
 #         pickle.dump(history,output,pickle.HIGHEST_PROTOCOL)
 
+def find_files_by_ext(path,ext):
+    all_files = os.listdir(path)
+    files_path = [file for file in all_files if file.split('.')[-1]==ext]
+    if len(files_path) > 1:
+        raise ValueError('Several files with the same extension')
+    return os.path.join(path,files_path[0])
+
+
 def set_seed(seed_value = 0):
     ''' Set detereministic seed'''
     os.environ['PYTHONHASHSEED'] = str(seed_value)

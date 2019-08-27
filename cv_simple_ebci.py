@@ -121,8 +121,9 @@ def cv_per_subj_test(x,y,model,model_path,block_mode = False,print_fold_history=
 
 
 if __name__=='__main__':
-    set_seed(seed_value=0)
     random_state = 0
+    set_seed(seed_value=random_state)
+    
     EEGNET_VERSION=4
     params_v2 = {'resample_to': 323,
              'regRate': 0,
@@ -138,8 +139,7 @@ if __name__=='__main__':
                  'dropoutRate1': 0.52,
                  'dropoutRate2': 0.36,
                  'lr': 0.00066,
-                 'norm_rate': 0.2756199103746462,
-                 'time_filter_lenght': 99
+                 'norm_rate': 0.2756199103746462
                  }
 
     if EEGNET_VERSION == 4:
