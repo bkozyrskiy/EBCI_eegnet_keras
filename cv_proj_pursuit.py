@@ -156,7 +156,7 @@ if __name__ == '__main__':
         params = params_v4
     elif EEGNET_VERSION == 2:
         params = params_v2
-    data = DataProjPursuit_v2('/home/likan_blk/BCI/ProjPursuitData/')
+    data = DataProjPursuit_v2('/home/likan_blk/BCI/ProjPursuitData/16-Jul-2019_16-00-03_without_speech_filt')
     # all_subjects = list(range(1,15))
     all_subjects = list(range(1,15))
     experiment_res_dir = './res/cv_proj_pursuit/EEGNET_v%d/' %EEGNET_VERSION
@@ -214,7 +214,7 @@ if __name__ == '__main__':
         # with open(os.path.join(model_path, 'cl3_cl1_cl4_tst.pkl'), 'wb') as output:
         #     pickle.dump((cl3_tst, cl1_tst,cl4_tst), output, pickle.HIGHEST_PROTOCOL)
 
-        mean_val_auc, std_val_auc, test_histpory,test_auc_ensemble = cv_test(x_tr, y_tr, model, model_path, block_mode=False,test_data=(x_tst_total,y_tst_total))
+        mean_val_auc, std_val_auc, test_histpory,test_auc_ensemble = cv_test(x_tr, y_tr, model, model_path, block_mode=True,test_data=(x_tst_total,y_tst_total))
         final_model_path = find_files_by_ext(model_path,'hdf5')
         test_auc_naive_cl1_cl3 = naive_evaluate(model_path=final_model_path,test_data=(x_tst_cl1_cl3,y_tst_cl1_cl3))
         test_auc_naive_cl4_cl3 = naive_evaluate(model_path=final_model_path,test_data=(x_tst_cl4_cl3,y_tst_cl4_cl3))
